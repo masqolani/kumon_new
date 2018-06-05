@@ -11,43 +11,49 @@ Class Member extends CI_Controller {
   }
 
 	public function index() {
+		$event = $this->event_model->get_event();
 		$get_member = $this->member_model->get_member();
 
 		$data['title'] = 'Member List';
 		$data['member_data'] = $get_member;
+		$data['event_list'] = $event;
 
     $this->load->view('member/member_view', $data);
 	}
 
-	public function get_member_json(){
-		$get_member = $this->member_model->get_member();
+	public function get_member_json($event_id = ''){
 
-		foreach ($get_member as $key => $value) {
-			$actions = anchor(base_url('member/update_member/').$value['member_id'],
-									'<i class="fa fa-pencil"></i> Update',
-									array('class' => 'btn btn-xs btn-success', 'style' => 'margin-top:2px'));
-			$actions .= ' '.anchor(base_url('member/#'), '<i class="fa fa-thumbs-up"></i> Attend',
-									array('id' => "attend_status", 'class' => 'btn btn-xs btn-info',
-									'member_id' => $value['member_id'], 'style' => 'margin-top:2px',
-									'onclick' => "return false"));
-			$actions .= ' '.anchor(base_url('member/delete_member/').$value['member_id'],
-									'<i class="fa fa-trash-o"></i> Delete', array('class' => 'btn btn-xs btn-danger',
-									'style' => 'margin-top:2px', 'onclick' =>
-									"return confirm('Are you sure you want to delete this member?');"));
+		$get_member = $this->member_model->get_member('', $event_id);
 
-			if($value['attend_status'] == 1) {
-				$attendance = "<a class='btn btn-sm btn-success'>Attend</a>";
-			} else {
-				$attendance = "<a class='btn btn-sm btn-danger'>Doesn't Attend</a>";
+		if(!empty($get_member)) {
+			foreach ($get_member as $key => $value) {
+				$actions = anchor(base_url('member/update_member/').$value['member_id'],
+										'<i class="fa fa-pencil"></i> Update',
+										array('class' => 'btn btn-xs btn-success', 'style' => 'margin-top:2px'));
+				$actions .= ' '.anchor(base_url('member/#'), '<i class="fa fa-thumbs-up"></i> Attend',
+										array('id' => "attend_status", 'class' => 'btn btn-xs btn-info',
+										'member_id' => $value['member_id'], 'style' => 'margin-top:2px',
+										'onclick' => "return false"));
+				$actions .= ' '.anchor(base_url('member/delete_member/').$value['member_id'],
+										'<i class="fa fa-trash-o"></i> Delete', array('class' => 'btn btn-xs btn-danger',
+										'style' => 'margin-top:2px', 'onclick' =>
+										"return confirm('Are you sure you want to delete this member?');"));
+
+				if($value['attend_status'] == 1) {
+					$attendance = "<a class='btn btn-sm btn-success'>Attend</a>";
+				} else {
+					$attendance = "<a class='btn btn-sm btn-danger'>Doesn't Attend</a>";
+				}
+
+				$get_member[$key]['actions'] = $actions;
+				$get_member[$key]['attend_status'] = $attendance;
+				// $get_member[$key]['event_name'] = $value['event_name'].' - '.$value['location_name'];
 			}
-
-			$get_member[$key]['actions'] = $actions;
-			$get_member[$key]['attend_status'] = $attendance;
-			$get_member[$key]['event_name'] = $value['event_name'].' - '.$value['location_name'];
+		} else {
+			$get_member = [];
 		}
 
 		$data['data'] = $get_member;
-
 		echo json_encode($data);
 	}
 
@@ -63,7 +69,6 @@ Class Member extends CI_Controller {
 
       // $this->load->library('upload', $config);
 			$this->upload->initialize($config);
-			// print_r($config);die;
       $exlfile=null;
       if ( ! $this->upload->do_upload()) {
 				$error = array('error' => $this->upload->display_errors());
@@ -89,12 +94,9 @@ Class Member extends CI_Controller {
 
         }
 
-        $data['header']=$header;
-        $data['values']=$arr_data;
-
-				// print_r($data);die;
-
-        $content=array();
+        $data['header'] = $header;
+        $data['values'] = $arr_data;
+        $content = array();
         for($i=2; $i<count($data['values']) + 2; $i++) {
 					$event_id = $this->input->post('event_id');
 

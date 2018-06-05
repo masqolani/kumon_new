@@ -37,6 +37,12 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 
                 <!-- /.panel-heading -->
                 <div class="panel-body">
+                    <select id="eventFilter" style="width:300px; margin-bottom:10px;" class="form-control">
+                      <option value="">All Event</option>
+                      <?php foreach ($event_list as $key => $value) {
+                        echo '<option value="'.$value['event_id'].'">'.$value['event_name'].' - '.$value['location_name'].'</option>';
+                      } ?>
+                    </select>
                     <table width="100%" class="table table-striped table-bordered table-hover" id="member_list">
                       <thead>
                         <tr>

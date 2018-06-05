@@ -20,16 +20,27 @@ $(document).ready(function() {
       ]
   });
 
+  // modified search
   $('div.dataTables_filter input').focus();
   $('.dataTables_filter input[type="search"]').
   attr('placeholder','looking for anything...').
   css({'width':'350px','display':'inline-block'});
 
+  // event filter
+  // $('#eventFilter').focus();
+  $('#eventFilter').on('change', function(){
+    var filter_value = $(this).val();
+    var new_url = getBaseUrl() + "/member/get_member_json/"+filter_value;
+    $("#member_list").DataTable().ajax.url(new_url).load();
+  });
+
+  // print ticket
   $("#ticketprint").click(function() {
       $('#printarea').printThis();
       return false;
   });
 
+  // update attendance status
   $("#member_list").on("click", "#attend_status", function(){
     $.ajax({
       type: "post",

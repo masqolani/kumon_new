@@ -33,7 +33,7 @@ Class Member_model extends CI_Model {
 			return FALSE;
 	}
 
-	public function get_member($member_id = '') {
+	public function get_member($member_id = '', $event_id = '') {
   	$query = 'SELECT
 		m.member_id, m.member_name, m.registration_number, m.event_id,
 		c.grade_name, t.type_name, e.event_name, l.location_name, m.seat,
@@ -49,6 +49,10 @@ Class Member_model extends CI_Model {
 
 		if(!empty($member_id)) {
 			$query .= ' WHERE member_id = '.$member_id;
+		}
+
+		if(!empty($event_id)) {
+			$query .= ' WHERE m.event_id = '.$event_id;
 		}
 
     $query = $this->db->query($query);
