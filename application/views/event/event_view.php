@@ -41,7 +41,8 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
                             <tr>
                                 <th>Event ID</th>
                                 <th>Event Name</th>
-                                <th>Event Date</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
                                 <th>Location</th>
                                 <th>Event Status</th>
                                 <th>Action</th>
@@ -57,9 +58,10 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
                                 <tr>
                                     <td><?php echo $value['event_id']; ?></td>
                                     <td><?php echo $value['event_name']; ?></td>
-                                    <td><?php echo $value['event_date']; ?></td>
+                                    <td><?php echo $value['start_date']; ?></td>
+                                    <td><?php echo $value['end_date']; ?></td>
                                     <td><?php echo $value['location_name']; ?></td>
-                                    <td><?php echo $value['event_status'] == 1 ? "Active" : "Inactive"; ?></td>
+                                    <td><?php echo $value['event_status'] == 1 ? "<a class='btn btn-sm btn-success'>ACTIVE</a>" : "<a class='btn btn-sm btn-danger'>IN_ACTIVE</a>"; ?></td>
                                     <td><?php echo $actions; ?></td>
                                 </tr>
                             <?php }

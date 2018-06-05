@@ -42,8 +42,12 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
                                       <input type="text" class="form-control" name="event_name" id="event_name" value="<?php echo (!empty($data['event_name'])) ? $data['event_name'] : "" ?>">
                                   </div>
                                   <div class="form-group">
-                                      <label>Event Date</label>
-                                      <input class="form-control" name="event_date" id="event_date" value="<?php echo (!empty($data['event_date'])) ? $data['event_date'] : "" ?>">
+                                      <label>Start Date</label>
+                                      <input class="form-control" name="start_date" id="start_date" value="<?php echo (!empty($data['start_date'])) ? $data['start_date'] : "" ?>">
+                                  </div>
+                                  <div class="form-group">
+                                      <label>End Date</label>
+                                      <input class="form-control" name="end_date" id="end_date" value="<?php echo (!empty($data['end_date'])) ? $data['end_date'] : "" ?>">
                                   </div>
                                   <div class="form-group">
                                       <label>Event Location</label>

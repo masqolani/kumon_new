@@ -40,6 +40,19 @@ $(document).ready(function() {
       return false;
   });
 
+  // $(document).keypress(function(event){
+  //
+  //   	var keycode = (event.keyCode ? event.keyCode : event.which);
+  //   	if(keycode == '13'){
+  //       $("#ticketprint").click(function() {
+  //           $('#printarea').printThis();
+  //           return false;
+  //       });
+  //   	}
+  //
+  //   });
+
+
   // update attendance status
   $("#member_list").on("click", "#attend_status", function(){
     $.ajax({

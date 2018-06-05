@@ -24,7 +24,8 @@ class Event extends CI_Controller {
 		if($post)
 		{
 			$this->form_validation->set_rules('event_name', 'Event Name', 'trim|required');
-			$this->form_validation->set_rules('event_date', 'Event Date', 'trim|required');
+			$this->form_validation->set_rules('start_date', 'Start Date', 'trim|required');
+			$this->form_validation->set_rules('end_date', 'End Date', 'trim|required');
 			$this->form_validation->set_rules('location_id', 'Location', 'trim|required');
 
       if ($this->form_validation->run() === TRUE) {
@@ -53,7 +54,8 @@ class Event extends CI_Controller {
 
 		if($post) {
 			$this->form_validation->set_rules('event_name', 'Event Name', 'trim|required');
-			$this->form_validation->set_rules('event_date', 'Event Date', 'trim|required');
+			$this->form_validation->set_rules('start_date', 'Start Date', 'trim|required');
+			$this->form_validation->set_rules('end_date', 'End Date', 'trim|required');
 			$this->form_validation->set_rules('location_id', 'Location', 'trim|required');
 
       if ($this->form_validation->run() === TRUE) {
@@ -96,7 +98,8 @@ class Event extends CI_Controller {
 		$data['event_id'] = $this->input->post('event_id');
 		$data['event_name'] = $this->input->post('event_name');
 		$data['location_id'] = $this->input->post('location_id');
-		$data['event_date'] = $this->input->post('event_date');
+		$data['start_date'] = $this->input->post('start_date');
+		$data['end_date'] = $this->input->post('end_date');
 
     $check_duplicated = $this->event_model->check_duplicated($data);
 

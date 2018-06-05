@@ -170,7 +170,7 @@ Class Member extends CI_Controller {
 		{
  			$data['form_title'] = 'Add New Member';
 			$data['form_action'] = base_url('member/create_member');
-			$data['event'] = $this->event_model->get_event();
+			$data['event'] = $this->event_model->get_event('', 1);
 
 			$this->load->view('member/import_form_view', $data);
 		}
@@ -198,6 +198,9 @@ Class Member extends CI_Controller {
 			$data['form_title'] = 'Update Member';
 			$data['form_action'] = base_url('member/update_member/'.$member_id);
 			$data['data'] = $get_member[0];
+			$data['event'] = $this->event_model->get_event('', 1);
+			$data['grade'] = $this->member_model->get_grade();
+			$data['type'] = $this->member_model->get_type();
 
 			$this->load->view('member/member_form_view', $data);
 		}

@@ -10,7 +10,13 @@ $(document).ready(function() {
         $(this).val($(this).val().toUpperCase());
     });
 
-    $('#event_date').datetimepicker({
+    $('#start_date').datetimepicker({
+      format: 'yyyy-mm-dd hh:ii',
+      startDate: new Date(),
+      autoclose: true
+    });
+
+    $('#end_date').datetimepicker({
       format: 'yyyy-mm-dd hh:ii',
       startDate: new Date(),
       autoclose: true
@@ -39,8 +45,11 @@ $(document).ready(function() {
                     event_name: function() {
                        return $("#event_name").val();
                     },
-                    event_date: function() {
-                      return $("#event_date").val();
+                    start_date: function() {
+                      return $("#start_date").val();
+                    },
+                    end_date: function() {
+                      return $("#end_date").val();
                     },
                     event_id: function() {
                       return $("#event_id").val();
@@ -63,8 +72,11 @@ $(document).ready(function() {
                     event_name: function() {
                        return $("#event_name").val();
                     },
-                    event_date: function() {
-                      return $("#event_date").val();
+                    start_date: function() {
+                      return $("#start_date").val();
+                    },
+                    end_date: function() {
+                      return $("#end_date").val();
                     },
                     event_id: function() {
                       return $("#event_id").val();
@@ -75,7 +87,7 @@ $(document).ready(function() {
                   }
                 }
             },
-            event_date :{
+            start_date :{
               required : true,
               remote: {
                 url: getBaseUrl()+"/event/check_event",
@@ -87,8 +99,38 @@ $(document).ready(function() {
                     event_name: function() {
                        return $("#event_name").val();
                     },
-                    event_date: function() {
-                      return $("#event_date").val();
+                    start_date: function() {
+                      return $("#start_date").val();
+                    },
+                    end_date: function() {
+                      return $("#end_date").val();
+                    },
+                    event_id: function() {
+                      return $("#event_id").val();
+                    }
+                  },
+                error: function(data) {
+                    event.href = getBaseUrl()+"/login"
+                  }
+                }
+            },
+            end_date :{
+              required : true,
+              remote: {
+                url: getBaseUrl()+"/event/check_event",
+                type: "post",
+                data: {
+                    location_id: function() {
+                       return $("#location_id").val();
+                    },
+                    event_name: function() {
+                       return $("#event_name").val();
+                    },
+                    start_date: function() {
+                      return $("#start_date").val();
+                    },
+                    end_date: function() {
+                      return $("#end_date").val();
                     },
                     event_id: function() {
                       return $("#event_id").val();
@@ -104,8 +146,11 @@ $(document).ready(function() {
             event_name: {
               remote: "Event name already exist"
             },
-            event_date: {
-              remote: "Event date already exist"
+            start_date: {
+              remote: "End date already exist"
+            },
+            end_date: {
+              remote: "Start date already exist"
             },
             location_id: {
               remote: "Event location already exist"

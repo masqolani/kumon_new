@@ -35,7 +35,7 @@ Class Member_model extends CI_Model {
 
 	public function get_member($member_id = '', $event_id = '') {
   	$query = 'SELECT
-		m.member_id, m.member_name, m.registration_number, m.event_id,
+		m.member_id, m.member_name, m.registration_number, m.event_id, m.type_id,
 		c.grade_name, t.type_name, e.event_name, l.location_name, m.seat,
 		m.attend_status, m.grade_id, m.get_award, m.member_session, m.gate_in, m.trophy_table,
 		m.meeting_point, m.gate_in, m.get_award, m.center, m.instructor, m.plakat,
@@ -104,11 +104,15 @@ Class Member_model extends CI_Model {
   // 		return FALSE;
   // }
 
-	public function get_type($type_code = '') {
+	public function get_type($type_code = '', $type_id = '') {
   	$query = 'SELECT * FROM type';
 
 		if(!empty($type_code)) {
 			$query .= " WHERE type_code = '$type_code'";
+		}
+
+		if(!empty($type_id)) {
+			$query .= " WHERE type_id = '$type_id'";
 		}
 
     $query = $this->db->query($query);

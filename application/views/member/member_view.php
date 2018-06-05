@@ -29,8 +29,14 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
                     <h4 class="panel-title pull-left" style="padding-top: 7px;"><?php echo $title; ?></h4>
                     <div class="btn-group pull-right">
                         <a href="<?php echo base_url('member/create_member'); ?>" class="btn btn-primary">
-                            <i class="fa fa-plus"></i>
+                            <i class="fa fa-upload"></i>
                             Import Member
+                        </a>
+                    </div>
+                    <div class="btn-group pull-right" style="margin-right:5px;">
+                        <a href="<?php echo base_url('member/create_member'); ?>" class="btn btn-primary">
+                            <i class="fa fa-download"></i>
+                            Export Member
                         </a>
                     </div>
                 </div>
@@ -83,7 +89,7 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
         <div class="modal-body">
         </div>
         <div class="modal-footer">
-          <button type="button" id="ticketprint" class="btn btn-info" data-dismiss="modal">Print</button>
+          <button type="button" id="ticketprint" class="btn btn-info" data-dismiss="modal">Print Ticket</button>
           <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
         </div>
       </div>
