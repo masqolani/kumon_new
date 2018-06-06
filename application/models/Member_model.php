@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 Class Member_model extends CI_Model {
 
 	public function add_member($data) {
-
+		unset($data['member_id']);
 		$this->db->insert('member', $data);
 		if ($this->db->affected_rows() > 0) {
 			return true;
@@ -17,11 +17,15 @@ Class Member_model extends CI_Model {
 	{
 		$member_id = $data['member_id'];
 		$member_name = $data['member_name'];
+		$registration_number = $data['registration_number'];
 
-		$query = "SELECT * FROM member WHERE member_id <> '$member_id' AND";
+		$query = "SELECT * FROM member WHERE member_id <> '$member_id' ";
 
 		if(!empty($member_name)) {
-			$query .= " member_name = '$member_name'";
+			$query .= " AND member_name = '$member_name'";
+		}
+		if(!empty($registration_number)) {
+			$query .= " AND registration_number = '$registration_number'";
 		}
 
     $query = $this->db->query($query);
@@ -33,7 +37,7 @@ Class Member_model extends CI_Model {
 			return FALSE;
 	}
 
-	public function get_member($member_id = '', $event_id = '') {
+	public function get_member($member_id = '', $event_id = '', $type_id = '', $attendance_status = '') {
   	$query = 'SELECT
 		m.member_id, m.member_name, m.registration_number, m.event_id, m.type_id,
 		c.grade_name, t.type_name, e.event_name, l.location_name, m.seat,
@@ -45,14 +49,23 @@ Class Member_model extends CI_Model {
 		LEFT JOIN grade AS c ON m.grade_id = c.grade_id
 		LEFT JOIN type AS t ON m.type_id = t.type_id
 		LEFT JOIN event AS e ON m.event_id = e.event_id
-		LEFT JOIN location AS l ON e.location_id = l.location_id';
+		LEFT JOIN location AS l ON e.location_id = l.location_id
+		WHERE 1=1 ';
 
 		if(!empty($member_id)) {
-			$query .= ' WHERE member_id = '.$member_id;
+			$query .= ' AND member_id = '.$member_id;
 		}
 
 		if(!empty($event_id)) {
-			$query .= ' WHERE m.event_id = '.$event_id;
+			$query .= ' AND m.event_id = '.$event_id;
+		}
+
+		if(!empty($type_id)) {
+			$query .= ' AND m.type_id = '.$type_id;
+		}
+
+		if(!empty($attendance_status)) {
+			$query .= ' AND m.attend_status = '.$attendance_status;
 		}
 
     $query = $this->db->query($query);
@@ -66,10 +79,8 @@ Class Member_model extends CI_Model {
 
 	public function update_member($post)
   {
-  	$data['member_name'] = $post['member_name'];
-
 		$this->db->where('member_id', $post['member_id']);
-		$query = $this->db->update('member', $data);
+		$query = $this->db->update('member', $post);
 
 		if($query)
 			return TRUE;

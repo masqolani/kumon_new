@@ -27,16 +27,22 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
             <div class="panel panel-default">
                 <div class="panel-heading clearfix">
                     <h4 class="panel-title pull-left" style="padding-top: 7px;"><?php echo $title; ?></h4>
-                    <div class="btn-group pull-right">
-                        <a href="<?php echo base_url('member/create_member'); ?>" class="btn btn-primary">
+                    <div class="btn-group pull-right" style="margin-right:5px;">
+                        <a href="<?php echo base_url('member/export_member'); ?>" class="btn btn-primary">
+                            <i class="fa fa-download"></i>
+                            Export Member
+                        </a>
+                    </div>
+                    <div class="btn-group pull-right" style="margin-right:5px;">
+                        <a href="<?php echo base_url('member/import_member'); ?>" class="btn btn-primary">
                             <i class="fa fa-upload"></i>
                             Import Member
                         </a>
                     </div>
                     <div class="btn-group pull-right" style="margin-right:5px;">
                         <a href="<?php echo base_url('member/create_member'); ?>" class="btn btn-primary">
-                            <i class="fa fa-download"></i>
-                            Export Member
+                            <i class="fa fa-plus"></i>
+                            Add Member
                         </a>
                     </div>
                 </div>
@@ -78,7 +84,7 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="empModal" role="dialog">
+<div class="modal fade" id="print_modal" role="dialog">
     <div class="modal-dialog">
       <!-- Modal content-->
       <div class="modal-content">
@@ -96,7 +102,40 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
     </div>
 </div>
 
+<div class="modal fade" id="detail_member_modal" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Member Detail</h4>
+        </div>
+        <div class="modal-body">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+</div>
+
 <?php $this->load->view('_footer'); ?>
 
 <script type="text/javascript" src="<?php echo base_url('assets/scripts/member/member.js'); ?>"></script>
 <script type="text/javascript" src="<?php echo base_url('assets/scripts/printThis.js'); ?>"></script>
+<script type="text/javascript">
+$('#member_list').DataTable({
+    "ajax": getBaseUrl() + "/member/get_member_json",
+    "columns": [
+        { "data": "registration_number" },
+        { "data": "member_name" },
+        { "data": "grade_name" },
+        { "data": "type_name" },
+        { "data": "event_name" },
+        { "data": "seat" },
+        { "data": "attend_status" },
+        { "data": "actions" }
+    ],
+    "order": [[ 1, "asc" ]]
+});
+</script>

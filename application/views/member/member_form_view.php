@@ -38,24 +38,6 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
                                 <input type="hidden" class="form-control" name="member_id" id="member_id" value="<?php echo (!empty($data['member_id'])) ? $data['member_id'] : "" ?>">
                                 <div class="col-lg-6">
                                   <div class="form-group">
-                                      <label>Registration Number</label>
-                                      <input type="text" class="form-control" name="registration_number" id="registration_number" value="<?php echo (!empty($data['registration_number'])) ? $data['registration_number'] : "" ?>">
-                                  </div>
-                                </div>
-                                <div class="col-lg-6">
-                                  <div class="form-group">
-                                      <label>Member Name</label>
-                                      <input type="text" class="form-control" name="member_name" id="member_name" value="<?php echo (!empty($data['member_name'])) ? $data['member_name'] : "" ?>">
-                                  </div>
-                                </div>
-                                <div class="col-lg-6">
-                                  <div class="form-group">
-                                      <label>Member Session</label>
-                                      <input type="text" class="form-control" name="member_session" id="member_session" value="<?php echo (!empty($data['member_session'])) ? $data['member_session'] : "" ?>">
-                                  </div>
-                                </div>
-                                <div class="col-lg-6">
-                                  <div class="form-group">
                                       <label>Event</label>
                                       <select id="event_id" name="event_id" class="form-control">
                                         <option value="">Select Event</option>
@@ -72,12 +54,22 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
                                         ?>
                                       </select>
                                   </div>
-                                </div>
-                                <div class="col-lg-6">
+                                  <div class="form-group">
+                                      <label>Registration Number</label>
+                                      <input type="text" class="form-control" name="registration_number" id="registration_number" value="<?php echo (!empty($data['registration_number'])) ? $data['registration_number'] : "" ?>">
+                                  </div>
+                                  <div class="form-group">
+                                      <label>Member Name</label>
+                                      <input type="text" class="form-control" name="member_name" id="member_name" value="<?php echo (!empty($data['member_name'])) ? $data['member_name'] : "" ?>">
+                                  </div>
+                                  <div class="form-group">
+                                      <label>Member Session</label>
+                                      <input type="text" class="form-control" name="member_session" id="member_session" value="<?php echo (!empty($data['member_session'])) ? $data['member_session'] : "" ?>">
+                                  </div>
                                   <div class="form-group">
                                       <label>Grade</label>
                                       <select id="grade_id" name="grade_id" class="form-control">
-                                        <option value="">Select Event</option>
+                                        <option value="">Select Grade</option>
                                         <?php
                                           foreach($grade as $row) {
                                             $selected='';
@@ -91,8 +83,6 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
                                         ?>
                                       </select>
                                   </div>
-                                </div>
-                                <div class="col-lg-6">
                                   <div class="form-group">
                                       <label>Type</label>
                                       <select id="type_id" name="type_id" class="form-control">
@@ -110,44 +100,30 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
                                         ?>
                                       </select>
                                   </div>
-                                </div>
-                                <div class="col-lg-6">
                                   <div class="form-group">
                                       <label>Gate</label>
                                       <input type="text" class="form-control" name="gate_in" id="gate_in" value="<?php echo (!empty($data['gate_in'])) ? $data['gate_in'] : "" ?>">
                                   </div>
-                                </div>
-                                <div class="col-lg-6">
                                   <div class="form-group">
                                       <label>Seat</label>
                                       <input type="text" class="form-control" name="seat" id="seat" value="<?php echo (!empty($data['seat'])) ? $data['seat'] : "" ?>">
                                   </div>
-                                </div>
-                                <div class="col-lg-6">
                                   <div class="form-group">
                                       <label>Award</label>
                                       <input type="text" class="form-control" name="get_award" id="get_award" value="<?php echo (!empty($data['get_award'])) ? $data['get_award'] : "" ?>">
                                   </div>
-                                </div>
-                                <div class="col-lg-6">
                                   <div class="form-group">
                                       <label>Trophy Table</label>
-                                      <input type="text" class="form-control" name="trophy_table" id="trophy_table" value="<?php echo (!empty($data['trophy_table'])) ? $data['trophy_table'] : "" ?>">
+                                      <input type="text" class="form-control" name="trophy_table" id="trophy_table" value="<?php echo (!empty($data['trophy_table'])) ? $data['trophy_table'] : "5 TINGKAT" ?>">
                                   </div>
-                                </div>
-                                <div class="col-lg-6">
                                   <div class="form-group">
                                       <label>Center</label>
-                                      <input type="text" class="form-control" name="center" id="center" value="<?php echo (!empty($data['center'])) ? $data['center'] : "" ?>">
+                                      <input type="text" class="form-control" name="center" id="center" value="<?php echo (!empty($data['center'])) ? $data['center'] : "M" ?>">
                                   </div>
-                                </div>
-                                <div class="col-lg-6">
                                   <div class="form-group">
                                       <label>instructor</label>
-                                      <input type="text" class="form-control" name="instructor" id="instructor" value="<?php echo (!empty($data['instructor'])) ? $data['instructor'] : "" ?>">
+                                      <input type="text" class="form-control" name="instructor" id="instructor" value="<?php echo (!empty($data['instructor'])) ? $data['instructor'] : "NOT AVAIL" ?>">
                                   </div>
-                                </div>
-                                <div class="col-lg-6">
                                   <div class="form-group">
                                       <label>Plakat</label>
                                       <input type="text" class="form-control" name="plakat" id="plakat" value="<?php echo (!empty($data['plakat'])) ? $data['plakat'] : "" ?>">
@@ -158,74 +134,50 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
                                       <label>Rank</label>
                                       <input type="text" class="form-control" name="rank" id="rank" value="<?php echo (!empty($data['rank'])) ? $data['rank'] : "" ?>">
                                   </div>
-                                </div>
-                                <div class="col-lg-6">
                                   <div class="form-group">
                                       <label>Among Of</label>
                                       <input type="text" class="form-control" name="among_of" id="among_of" value="<?php echo (!empty($data['among_of'])) ? $data['among_of'] : "" ?>">
                                   </div>
-                                </div>
-                                <div class="col-lg-6">
                                   <div class="form-group">
                                       <label>Math</label>
                                       <input type="text" class="form-control" name="math" id="math" value="<?php echo (!empty($data['math'])) ? $data['math'] : "" ?>">
                                   </div>
-                                </div>
-                                <div class="col-lg-6">
                                   <div class="form-group">
                                       <label>EE</label>
                                       <input type="text" class="form-control" name="ee" id="ee" value="<?php echo (!empty($data['ee'])) ? $data['ee'] : "" ?>">
                                   </div>
-                                </div>
-                                <div class="col-lg-6">
                                   <div class="form-group">
                                       <label>EFL</label>
                                       <input type="text" class="form-control" name="efl" id="efl" value="<?php echo (!empty($data['efl'])) ? $data['efl'] : "" ?>">
                                   </div>
-                                </div>
-                                <div class="col-lg-6">
                                   <div class="form-group">
                                       <label>CM</label>
                                       <input type="text" class="form-control" name="cm" id="cm" value="<?php echo (!empty($data['cm'])) ? $data['cm'] : "" ?>">
                                   </div>
-                                </div>
-                                <div class="col-lg-6">
                                   <div class="form-group">
                                       <label>CE</label>
                                       <input type="text" class="form-control" name="ce" id="ce" value="<?php echo (!empty($data['ce'])) ? $data['ce'] : "" ?>">
                                   </div>
-                                </div>
-                                <div class="col-lg-6">
                                   <div class="form-group">
                                       <label>CF</label>
                                       <input type="text" class="form-control" name="cf" id="cf" value="<?php echo (!empty($data['cf'])) ? $data['cf'] : "" ?>">
                                   </div>
-                                </div>
-                                <div class="col-lg-6">
                                   <div class="form-group">
                                       <label>Trophy at Class</label>
                                       <input type="text" class="form-control" name="trophy_at_class" id="trophy_at_class" value="<?php echo (!empty($data['trophy_at_class'])) ? $data['trophy_at_class'] : "" ?>">
                                   </div>
-                                </div>
-                                <div class="col-lg-6">
                                   <div class="form-group">
                                       <label>ASHR Level</label>
                                       <input type="text" class="form-control" name="ashr_level" id="ashr_level" value="<?php echo (!empty($data['ashr_level'])) ? $data['ashr_level'] : "" ?>">
                                   </div>
-                                </div>
-                                <div class="col-lg-6">
                                   <div class="form-group">
                                       <label>Studend ID</label>
                                       <input type="text" class="form-control" name="student_id" id="student_id" value="<?php echo (!empty($data['student_id'])) ? $data['student_id'] : "" ?>">
                                   </div>
-                                </div>
-                                <div class="col-lg-6">
                                   <div class="form-group">
                                       <label>Meeting Point</label>
                                       <input type="text" class="form-control" name="meeting_point" id="meeting_point" value="<?php echo (!empty($data['meeting_point'])) ? $data['meeting_point'] : "" ?>">
                                   </div>
-                                </div>
-                                <div class="col-lg-6">
                                   <div class="form-group">
                                       <label>Attendance Status</label>
                                       <select id="attend_status" name="attend_status" class="form-control">

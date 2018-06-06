@@ -8,6 +8,7 @@ Class Member extends CI_Controller {
 
 		$this->load->model('member_model');
 		$this->load->model('event_model');
+		$this->load->helper('php-excel');
   }
 
 	public function index() {
@@ -38,6 +39,10 @@ Class Member extends CI_Controller {
 										'<i class="fa fa-trash-o"></i> Delete', array('class' => 'btn btn-xs btn-danger',
 										'style' => 'margin-top:2px', 'onclick' =>
 										"return confirm('Are you sure you want to delete this member?');"));
+				$actions .= ' '.anchor(base_url('member/#'), '<i class="fa fa-thumbs-up"></i> Detail',
+										array('id' => "detail_member", 'class' => 'btn btn-xs btn-warning',
+										'member_id' => $value['member_id'], 'style' => 'margin-top:2px',
+										'onclick' => "return false"));
 
 				if($value['attend_status'] == 1) {
 					$attendance = "<a class='btn btn-sm btn-success'>Attend</a>";
@@ -57,6 +62,43 @@ Class Member extends CI_Controller {
 		echo json_encode($data);
 	}
 
+	public function get_detail_member_json_by_id() {
+		$member_id = $this->input->post('member_id');
+		$get_member = $this->member_model->get_member($member_id);
+
+		if(!empty($get_member)) {
+			echo json_encode($get_member[0]);
+		} else {
+			echo 'false';
+		}
+	}
+
+	public function import_member() {
+		$post = $this->input->post();
+
+		if($post)
+		{
+			$this->form_validation->set_rules('event_id', 'Event Name', 'trim|required');
+			// $this->form_validation->set_rules('file_upload', 'File', 'required');
+
+      if ($this->form_validation->run() === TRUE) {
+					$this->do_upload();
+      }
+      else {
+          $this->session->set_flashdata('error', validation_errors());
+          redirect('member/import_member');
+      }
+		}
+		else
+		{
+ 			$data['form_title'] = 'Import Member';
+			$data['form_action'] = base_url('member/import_member');
+			$data['event'] = $this->event_model->get_event('', 1);
+
+			$this->load->view('member/import_form_view', $data);
+		}
+	}
+
 	public function do_upload() {
 
       ini_set('memory_limit', '1024M');
@@ -73,7 +115,7 @@ Class Member extends CI_Controller {
       if ( ! $this->upload->do_upload()) {
 				$error = array('error' => $this->upload->display_errors());
         echo "<script>alert('{$error['error']}');"
-        . " window.location.replace('" . base_url() . "member/create_member'); </script> ";
+        . " window.location.replace('" . base_url() . "member/import_member'); </script> ";
       } else {
         $exlfile = array('upload_data' => $this->upload->data());
         $objs = PHPExcel_IOFactory::load($exlfile['upload_data']['full_path']);
@@ -150,16 +192,48 @@ Class Member extends CI_Controller {
       }
   }
 
+	public function export_member() {
+		$post = $this->input->post();
+
+		if($post)
+		{
+			$this->form_validation->set_rules('event_id', 'Event Name', 'trim|required');
+			$this->form_validation->set_rules('type_id', 'Type Name', 'trim|required');
+
+			if ($this->form_validation->run() === TRUE) {
+					$this->export();
+			}
+			else {
+					$this->session->set_flashdata('error', validation_errors());
+					redirect('member/export_member');
+			}
+		}
+		else
+		{
+			$data['form_title'] = 'Export Member';
+			$data['form_action'] = base_url('member/export_member');
+			$data['event'] = $this->event_model->get_event('', 1);
+			$data['type'] = $this->member_model->get_type();
+
+			$this->load->view('member/export_form_view', $data);
+		}
+	}
+
 	public function create_member() {
 		$post = $this->input->post();
 
 		if($post)
 		{
 			$this->form_validation->set_rules('event_id', 'Event Name', 'trim|required');
-			// $this->form_validation->set_rules('file_upload', 'File', 'required');
+			$this->form_validation->set_rules('registration_number', 'Registration Number', 'required');
+			$this->form_validation->set_rules('member_session', 'Member Session', 'required');
+			$this->form_validation->set_rules('grade_id', 'Grade', 'required');
+			$this->form_validation->set_rules('type_id', 'type_id', 'required');
 
       if ($this->form_validation->run() === TRUE) {
-					$this->do_upload();
+					$this->member_model->add_member($post);
+					$this->session->set_flashdata('success', 'Member has been add successfully');
+					redirect('member');
       }
       else {
           $this->session->set_flashdata('error', validation_errors());
@@ -171,8 +245,10 @@ Class Member extends CI_Controller {
  			$data['form_title'] = 'Add New Member';
 			$data['form_action'] = base_url('member/create_member');
 			$data['event'] = $this->event_model->get_event('', 1);
+			$data['grade'] = $this->member_model->get_grade();
+			$data['type'] = $this->member_model->get_type();
 
-			$this->load->view('member/import_form_view', $data);
+			$this->load->view('member/member_form_view', $data);
 		}
 	}
 
@@ -185,7 +261,7 @@ Class Member extends CI_Controller {
 
       if ($this->form_validation->run() === TRUE) {
       		$this->member_model->update_member($post);
-          $this->session->set_flashdata('success', 'Member ID '.$post['member_id'].' has been updated successfully');
+          $this->session->set_flashdata('success', 'Registration number '.$post['registration_number'].' has been updated successfully');
           redirect('member');
       }
       else {
@@ -224,6 +300,7 @@ Class Member extends CI_Controller {
 	{
 		$data['member_id'] = $this->input->post('member_id');
 		$data['member_name'] = $this->input->post('member_name');
+		$data['registration_number'] = $this->input->post('registration_number');
 
     $check_duplicated = $this->member_model->check_duplicated($data);
 
@@ -256,5 +333,33 @@ Class Member extends CI_Controller {
 		}
 		echo json_encode($data);
 	}
+
+	public function export() {
+		$event_id = $this->input->post('event_id');
+		$type_id = $this->input->post('type_id');
+
+    $field[] = ["Registration Number", "Name", "Location", "Event", "Grade", "Seat", "Type"];
+    $get_member = $this->member_model->get_member('', $event_id, $type_id, 1);
+
+		if(!empty($get_member)) {
+			foreach($get_member as $row) {
+					$data[] = [$row['registration_number'], $row['member_name'],
+											$row['location_name'], $row['event_name'], $row['grade_name'],
+											$row['seat'], $row['type_name']];
+			}
+
+			$xls = new Excel_XML;
+			$xls->addArray($field);
+			$xls->addArray($data);
+			$xls->generateXML('Member_Data_'.$get_member[0]['type_name'].'_'.$get_member[0]['location_name']);
+			// $xls->generateXML('Member_Data');
+
+			// $this->session->set_flashdata('success', 'Member data has been export successfully');
+			// redirect('member/export_member');
+		} else {
+			$this->session->set_flashdata('error', 'Member data not found');
+			redirect('member/export_member');
+		}
+  }
 
 }

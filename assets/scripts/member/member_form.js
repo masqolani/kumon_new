@@ -6,35 +6,82 @@ function getBaseUrl() {
 
 $(document).ready(function() {
 
-    $('#location_form').validate({
+    $('#member_name').keyup(function(){
+        $(this).val($(this).val().toUpperCase());
+    });
+
+    $('#registration_number').keyup(function(){
+        $(this).val($(this).val().toUpperCase());
+    });
+
+    $('#member_form').validate({
         errorElement: 'span',
         errorClass: 'help-block',
         focusInvalid: false,
         ignore: "",
         onkeyup: false,
         rules: {
-            location_name :{
+            member_name :{
               required : true,
               remote: {
-                url: getBaseUrl()+"/location/check_location",
+                url: getBaseUrl()+"/member/check_member",
                 type: "post",
                 data: {
-                    location_name: function() {
-                       return $( "#location_name" ).val();
+                    member_name: function() {
+                       return $( "#member_name" ).val();
                     },
-                    location_id: function() {
-                      return $("#location_id").val();
+                    member_id: function() {
+                      return $("#member_id").val();
+                    },
+                    event_id: function() {
+                      return $("#event_id").val();
                     }
                   },
                 error: function(data) {
                     location.href = getBaseUrl()+"/login"
                   }
                 }
+            },
+            registration_number :{
+              required : true,
+              remote: {
+                url: getBaseUrl()+"/member/check_member",
+                type: "post",
+                data: {
+                    registration_number: function() {
+                       return $( "#registration_number" ).val();
+                    },
+                    member_id: function() {
+                      return $("#member_id").val();
+                    },
+                    event_id: function() {
+                      return $("#event_id").val();
+                    }
+                  },
+                error: function(data) {
+                    location.href = getBaseUrl()+"/login"
+                  }
+                }
+            },
+            event_id :{
+              required : true
+            },
+            member_session :{
+              required : true
+            },
+            grade_id :{
+              required : true
+            },
+            type_id :{
+              required : true
             }
         },
         messages: {
-            location_name: {
-              remote: "Location name already exist"
+            member_name: {
+              remote: "Member name already exist"
+            },
+            registration_number: {
+              remote: "Registration number already exist"
             }
         },
         invalidHandler: function (event, validator) { //display error alert on form submit
