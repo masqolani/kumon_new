@@ -12,7 +12,7 @@ Class Member extends CI_Controller {
   }
 
 	public function index() {
-		$event = $this->event_model->get_event();
+		$event = $this->event_model->get_event('', 1);
 		$get_member = $this->member_model->get_member();
 
 		$data['title'] = 'Member List';
@@ -142,7 +142,13 @@ Class Member extends CI_Controller {
         for($i=2; $i<count($data['values']) + 2; $i++) {
 					$event_id = $this->input->post('event_id');
 
-					$grade = $this->member_model->get_grade($data['values'][$i]['C']);
+					$grade_name = $data['values'][$i]['C'];
+					$trophy_table = $data['values'][$i]['I'];
+					if($trophy_table == 'COMPLETER') {
+						$grade_name = '';
+					}
+
+					$grade = $this->member_model->get_grade('', $grade_name, $trophy_table);
 					$grade_id = $grade[0]['grade_id'];
 
 					$type_code = substr($data['values'][$i]['G'],0,1) == "C" ? "C" : "A";
@@ -153,8 +159,7 @@ Class Member extends CI_Controller {
               'registration_number' => $data['values'][$i]['B'],
               'event_id' 						=> $event_id,
               'member_session' 			=> $data['values'][$i]['D'],
-							//untuk sementara default grade_id = 1
-              'grade_id'						=> $grade_id != "" ? $grade_id : 1,
+              'grade_id'						=> !empty($grade_id) ? $grade_id : 0,
               'member_name'					=> $data['values'][$i]['F'],
               'type_id'							=> $type_id,
               'seat' 								=> $data['values'][$i]['K'],
@@ -179,9 +184,13 @@ Class Member extends CI_Controller {
 	        ));
         }
 
-				// log_message('debug', 'member => '.print_r($content));die;
 
-        if($this->member_model->import_member($content)) {
+				$get_event_id = $this->member_model->get_member('', $content[0]['event_id'], '', '');
+				if(!empty($get_event_id)) {
+					$get_event_id = $get_event_id[0]['event_id'];
+				}
+
+        if($this->member_model->import_member($content, $get_event_id)) {
             if(unlink($exlfile['upload_data']['full_path'])) {
 							$this->session->set_flashdata('success', 'File member has been import successfully');
 							redirect('member');

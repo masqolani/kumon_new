@@ -95,7 +95,7 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
         <div class="modal-body">
         </div>
         <div class="modal-footer">
-          <button type="button" id="ticketprint" class="btn btn-info" data-dismiss="modal">Print Ticket</button>
+          <button type="button" id="ticketprint" class="btn btn-info" data-dismiss="modal" autofocus>Print Ticket</button>
           <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
         </div>
       </div>

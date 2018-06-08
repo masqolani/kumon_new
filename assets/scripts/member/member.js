@@ -28,7 +28,6 @@ $(document).ready(function() {
   css({'width':'350px','display':'inline-block'});
 
   // event filter
-  // $('#eventFilter').focus();
   $('#eventFilter').on('change', function(){
     var filter_value = $(this).val();
     var new_url = getBaseUrl() + "/member/get_member_json/"+filter_value;
@@ -40,19 +39,6 @@ $(document).ready(function() {
       $('#printarea').printThis();
       return false;
   });
-
-  // $(document).keypress(function(event){
-  //
-  //   	var keycode = (event.keyCode ? event.keyCode : event.which);
-  //   	if(keycode == '13'){
-  //       $("#ticketprint").click(function() {
-  //           $('#printarea').printThis();
-  //           return false;
-  //       });
-  //   	}
-  //
-  //   });
-
 
   // update attendance status
   $("#member_list").on("click", "#attend_status", function(){

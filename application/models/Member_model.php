@@ -99,31 +99,15 @@ Class Member_model extends CI_Model {
 			return FALSE;
   }
 
-	// public function get_grade($grade_name = '') {
-  // 	$query = 'SELECT * FROM grade';
-	//
-	// 	if(!empty($grade_name)) {
-	// 		$query .= " WHERE grade_name = '$grade_name'";
-	// 	}
-	//
-  //   $query = $this->db->query($query);
-  // 	$query = $query->result_array();
-	//
-  // 	if($query)
-  // 		return $query;
-  // 	else
-  // 		return FALSE;
-  // }
-
 	public function get_type($type_code = '', $type_id = '') {
-  	$query = 'SELECT * FROM type';
+  	$query = 'SELECT * FROM type WHERE 1=1 ';
 
 		if(!empty($type_code)) {
-			$query .= " WHERE type_code = '$type_code'";
+			$query .= " AND type_code = '$type_code'";
 		}
 
 		if(!empty($type_id)) {
-			$query .= " WHERE type_id = '$type_id'";
+			$query .= " AND type_id = '$type_id'";
 		}
 
     $query = $this->db->query($query);
@@ -135,11 +119,19 @@ Class Member_model extends CI_Model {
   		return FALSE;
   }
 
-	public function get_grade($grade_id = '') {
-  	$query = 'SELECT * FROM grade';
+	public function get_grade($grade_id = '', $grade_name = '', $trophy_table = '') {
+  	$query = 'SELECT * FROM grade WHERE 1=1 ';
 
 		if(!empty($grade_id)) {
-			$query .= " WHERE grade_id = '$grade_id'";
+			$query .= " AND grade_id = '$grade_id'";
+		}
+
+		if(!empty($grade_name)) {
+			$query .= " AND grade_name = '$grade_name'";
+		}
+
+		if(!empty($trophy_table)) {
+			$query .= " AND trophy_table = '$trophy_table'";
 		}
 
     $query = $this->db->query($query);
@@ -151,9 +143,11 @@ Class Member_model extends CI_Model {
   		return FALSE;
   }
 
-	public function import_member($data = []) {
-		if(!empty($data)) {
-	      $this->db->truncate('member');
+	public function import_member($data = [], $event_id = '') {
+
+		if($event_id == $data[0]['event_id']) {
+	      $query = "DELETE FROM member WHERE event_id = '$event_id'";
+				$this->db->query($query);
 	  }
 
 	  if($this->db->insert_batch('member', $data)) {
