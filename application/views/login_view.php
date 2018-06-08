@@ -38,17 +38,18 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 
     <style type="text/css">
         .background_blur {
-              background: url('assets/images/login_wallpaper.jpg');
+              background: url('assets/images/kumon_wallpaper.jpg');
+              background-size: 100% auto;
                position: absolute;
                 top: 0;
                 left: 0;
                 bottom: 0;
                 right: 0;
-              /*-webkit-filter: blur(5px);
+              -webkit-filter: blur(5px);
               -moz-filter: blur(5px);
               -o-filter: blur(5px);
               -ms-filter: blur(5px);
-              filter: blur(5px);*/
+              filter: blur(5px);
         }
     </style>
 
@@ -61,7 +62,7 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
         <div class="row">
             <div class="col-lg-12">
                 <div class="panel-heading">
-                    <p class="panel-title" style="text-align:center; margin-top: 30px; font-size: 30px;">KUMON</p>
+                    <!-- <p class="panel-title" style="text-align:center;">KUMON</p> -->
                 </div>
             </div>
             <div class="col-md-4 col-md-offset-4">

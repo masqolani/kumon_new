@@ -118,9 +118,6 @@
                             <a href="<?php echo base_url('report'); ?>"><i class="fa fa-sticky-note fa-fw"></i> Report</a>
                         </li>
                         <li>
-                            <a href="<?php echo base_url('help'); ?>"><i class="fa fa-question-circle fa-fw"></i> Help</a>
-                        </li>
-                        <li>
                             <a href="<?php echo base_url('about'); ?>"><i class="fa fa-user-secret fa-fw"></i> About</a>
                         </li>
                     </ul>
