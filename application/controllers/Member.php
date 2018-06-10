@@ -347,7 +347,7 @@ Class Member extends CI_Controller {
 		$event_id = $this->input->post('event_id');
 		$type_id = $this->input->post('type_id');
 
-    $field[] = ["Registration Number", "Name", "Location", "Event", "Grade", "Seat", "Type"];
+    $field[] = ["REGISTRATION NUMBER", "NAME", "LOCATION", "EVENT", "GRADE", "SEAT", "TYPE"];
     $get_member = $this->member_model->get_member('', $event_id, $type_id, 1);
 
 		if(!empty($get_member)) {
