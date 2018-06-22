@@ -6,20 +6,9 @@ function getBaseUrl() {
 
 $(document).ready(function() {
 
-  // $('#member_list').DataTable({
-  //     "ajax": getBaseUrl() + "/member/get_member_json",
-  //     "columns": [
-  //         { "data": "registration_number" },
-  //         { "data": "member_name" },
-  //         { "data": "grade_name" },
-  //         { "data": "type_name" },
-  //         { "data": "event_name" },
-  //         { "data": "seat" },
-  //         { "data": "attend_status" },
-  //         { "data": "actions" }
-  //     ],
-  //     "order": [[ 1, "desc" ]]
-  // });
+  setInterval( function () {
+      $('#member_list').DataTable().ajax.reload(null, false);
+  }, 15000);
 
   // modified search
   $('div.dataTables_filter input').focus();
