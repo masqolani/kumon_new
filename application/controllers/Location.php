@@ -7,6 +7,7 @@ class Location extends CI_Controller {
     parent::__construct();
 
 		$this->load->model('location_model');
+		$this->load->model('event_model');
   }
 
 	public function index() {
@@ -75,16 +76,23 @@ class Location extends CI_Controller {
 
 	public function delete_location($id='')
 	{
-    $delete_location = $this->location_model->delete_location($id);
+		$check_location_active = $this->event_model->get_event('', '', $id);
 
-    if($delete_location) {
-      $this->session->set_flashdata('success', 'Location ID '.$id.' has been deleted');
-      redirect('location');
-    }
-    else {
-    	$this->session->set_flashdata('error', 'Cannot delete Location ID '.$id);
-      redirect('location');
-    }
+		if($check_location_active) {
+			$this->session->set_flashdata('error', 'Cannot delete Location when location used in event');
+			redirect('location');
+		} else {
+			$delete_location = $this->location_model->delete_location($id);
+
+			if($delete_location) {
+				$this->session->set_flashdata('success', 'Location ID '.$id.' has been deleted');
+				redirect('location');
+			}
+			else {
+				$this->session->set_flashdata('error', 'Cannot delete Location ID '.$id);
+				redirect('location');
+			}
+		}
   }
 
 	public function check_location()

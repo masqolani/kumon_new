@@ -96,6 +96,8 @@
               opacity: 1;
           }
       }
+
+      .default-cursor {cursor: default;}
     </style>
 
 </head>
@@ -140,9 +142,11 @@
                         <li>
                             <a href="<?php echo base_url('home'); ?>"><i class="fa fa-home fa-fw"></i> Dashboard</a>
                         </li>
+                        <?php if($this->session->userdata['logged_in']['user_status_id'] == 1) { ?>
                         <li>
                             <a href="<?php echo base_url('user'); ?>"><i class="fa fa-user fa-fw"></i> User</a>
                         </li>
+                      <?php } ?>
                         <li>
                             <a href="<?php echo base_url('location'); ?>"><i class="fa fa-map-marker fa-fw"></i> Location</a>
                         </li>

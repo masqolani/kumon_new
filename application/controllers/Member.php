@@ -31,26 +31,32 @@ Class Member extends CI_Controller {
 				$actions = anchor(base_url('member/update_member/').$value['member_id'],
 										'<i class="fa fa-pencil"></i> Update',
 										array('class' => 'btn btn-xs btn-success', 'style' => 'margin-top:2px'));
-				$actions .= ' '.anchor(base_url('member/#'), '<i class="fa fa-thumbs-up"></i> Attend',
-										array('id' => "attend_status", 'class' => 'btn btn-xs btn-info',
-										'member_id' => $value['member_id'], 'style' => 'margin-top:2px',
-										'onclick' => "return false"));
-				$actions .= ' '.anchor(base_url('member/delete_member/').$value['member_id'],
-										'<i class="fa fa-trash-o"></i> Delete', array('class' => 'btn btn-xs btn-danger',
-										'style' => 'margin-top:2px', 'onclick' =>
-										"return confirm('Are you sure you want to delete this member?');"));
-				$actions .= ' '.anchor(base_url('member/#'), '<i class="fa fa-thumbs-up"></i> Detail',
+
+				if($this->session->userdata['logged_in']['user_status_id'] == 1) {
+					$actions .= ' '.anchor(base_url('member/delete_member/').$value['member_id'],
+											'<i class="fa fa-trash-o"></i> Delete', array('class' => 'btn btn-xs btn-danger',
+											'style' => 'margin-top:2px', 'onclick' =>
+											"return confirm('Are you sure you want to delete this member?');"));
+				}
+
+				$actions .= ' '.anchor(base_url('member/#'), '<i class="fa fa-info-circle"></i> Detail',
 										array('id' => "detail_member", 'class' => 'btn btn-xs btn-warning',
 										'member_id' => $value['member_id'], 'style' => 'margin-top:2px',
 										'onclick' => "return false"));
 
+				$actions_attendance = anchor(base_url('member/#'), '<i class="fa fa-thumbs-up"></i> Attend',
+										array('id' => "attend_status", 'class' => 'btn btn-info',
+										'member_id' => $value['member_id'], 'style' => 'margin-top:2px',
+										'onclick' => "return false"));
+
 				if($value['attend_status'] == 1) {
-					$attendance = "<a class='btn btn-sm btn-success'>Attend</a>";
+					$attendance = "<a class='btn btn-sm btn-success default-cursor'>Attend</a>";
 				} else {
-					$attendance = "<a class='btn btn-sm btn-danger'>Doesn't Attend</a>";
+					$attendance = "<a class='btn btn-sm btn-danger default-cursor'>Doesn't Attend</a>";
 				}
 
 				$get_member[$key]['actions'] = $actions;
+				$get_member[$key]['actions_attendance'] = $actions_attendance;
 				$get_member[$key]['attend_status'] = $attendance;
 				// $get_member[$key]['event_name'] = $value['event_name'].' - '.$value['location_name'];
 			}
@@ -74,28 +80,32 @@ Class Member extends CI_Controller {
 	}
 
 	public function import_member() {
-		$post = $this->input->post();
+		if($this->session->userdata['logged_in']['user_status_id'] == 1) {
+			$post = $this->input->post();
 
-		if($post)
-		{
-			$this->form_validation->set_rules('event_id', 'Event Name', 'trim|required');
-			// $this->form_validation->set_rules('file_upload', 'File', 'required');
+			if($post)
+			{
+				$this->form_validation->set_rules('event_id', 'Event Name', 'trim|required');
+				// $this->form_validation->set_rules('file_upload', 'File', 'required');
 
-      if ($this->form_validation->run() === TRUE) {
-					$this->do_upload();
-      }
-      else {
-          $this->session->set_flashdata('error', validation_errors());
-          redirect('member/import_member');
-      }
-		}
-		else
-		{
- 			$data['form_title'] = 'Import Member';
-			$data['form_action'] = base_url('member/import_member');
-			$data['event'] = $this->event_model->get_event('', 1);
+	      if ($this->form_validation->run() === TRUE) {
+						$this->do_upload();
+	      }
+	      else {
+	          $this->session->set_flashdata('error', validation_errors());
+	          redirect('member/import_member');
+	      }
+			}
+			else
+			{
+	 			$data['form_title'] = 'Import Member';
+				$data['form_action'] = base_url('member/import_member');
+				$data['event'] = $this->event_model->get_event('', 1);
 
-			$this->load->view('member/import_form_view', $data);
+				$this->load->view('member/import_form_view', $data);
+			}
+		} else {
+			redirect('member');
 		}
 	}
 
@@ -202,62 +212,101 @@ Class Member extends CI_Controller {
   }
 
 	public function export_member() {
-		$post = $this->input->post();
+		if($this->session->userdata['logged_in']['user_status_id'] == 1) {
+			$post = $this->input->post();
 
-		if($post)
-		{
-			$this->form_validation->set_rules('event_id', 'Event Name', 'trim|required');
-			$this->form_validation->set_rules('type_id', 'Type Name', 'trim|required');
+			if($post)
+			{
+				$this->form_validation->set_rules('event_id', 'Event Name', 'trim|required');
+				$this->form_validation->set_rules('type_id', 'Type Name', 'trim|required');
 
-			if ($this->form_validation->run() === TRUE) {
-					$this->export();
+				if ($this->form_validation->run() === TRUE) {
+						$this->export();
+				}
+				else {
+						$this->session->set_flashdata('error', validation_errors());
+						redirect('member/export_member');
+				}
 			}
-			else {
-					$this->session->set_flashdata('error', validation_errors());
-					redirect('member/export_member');
+			else
+			{
+				$data['form_title'] = 'Export Member';
+				$data['form_action'] = base_url('member/export_member');
+				$data['event'] = $this->event_model->get_event('', 1);
+				$data['type'] = $this->member_model->get_type();
+
+				$this->load->view('member/export_form_view', $data);
 			}
+		} else {
+			redirect('member');
 		}
-		else
-		{
-			$data['form_title'] = 'Export Member';
-			$data['form_action'] = base_url('member/export_member');
-			$data['event'] = $this->event_model->get_event('', 1);
-			$data['type'] = $this->member_model->get_type();
+	}
 
-			$this->load->view('member/export_form_view', $data);
+	public function delete_member_by_event() {
+		if($this->session->userdata['logged_in']['user_status_id'] == 1) {
+			$post = $this->input->post();
+
+			if($post)
+			{
+				$this->form_validation->set_rules('event_id', 'Event Name', 'trim|required');
+
+				if ($this->form_validation->run() === TRUE) {
+						$this->member_model->delete_member('', $post['event_id']);
+						$this->session->set_flashdata('success', 'Member has been delete successfully');
+						redirect('member');
+				}
+				else {
+						$this->session->set_flashdata('error', validation_errors());
+						redirect('member/delete_member_by_event');
+				}
+			}
+			else
+			{
+				$data['form_title'] = 'Delete Member By Event';
+				$data['form_action'] = base_url('member/delete_member_by_event');
+				$data['event'] = $this->event_model->get_event('', 1);
+
+				$this->load->view('member/delete_member_form_view', $data);
+			}
+		} else {
+			redirect('member');
 		}
 	}
 
 	public function create_member() {
-		$post = $this->input->post();
+		if($this->session->userdata['logged_in']['user_status_id'] == 1) {
+			$post = $this->input->post();
 
-		if($post)
-		{
-			$this->form_validation->set_rules('event_id', 'Event Name', 'trim|required');
-			$this->form_validation->set_rules('registration_number', 'Registration Number', 'required');
-			$this->form_validation->set_rules('member_session', 'Member Session', 'required');
-			$this->form_validation->set_rules('grade_id', 'Grade', 'required');
-			$this->form_validation->set_rules('type_id', 'type_id', 'required');
+			if($post)
+			{
+				$this->form_validation->set_rules('event_id', 'Event Name', 'trim|required');
+				$this->form_validation->set_rules('registration_number', 'Registration Number', 'required');
+				$this->form_validation->set_rules('member_session', 'Member Session', 'required');
+				$this->form_validation->set_rules('grade_id', 'Grade', 'required');
+				$this->form_validation->set_rules('type_id', 'type_id', 'required');
 
-      if ($this->form_validation->run() === TRUE) {
-					$this->member_model->add_member($post);
-					$this->session->set_flashdata('success', 'Member has been add successfully');
-					redirect('member');
-      }
-      else {
-          $this->session->set_flashdata('error', validation_errors());
-          redirect('member/create_member');
-      }
-		}
-		else
-		{
- 			$data['form_title'] = 'Add New Member';
-			$data['form_action'] = base_url('member/create_member');
-			$data['event'] = $this->event_model->get_event('', 1);
-			$data['grade'] = $this->member_model->get_grade();
-			$data['type'] = $this->member_model->get_type();
+	      if ($this->form_validation->run() === TRUE) {
+						$this->member_model->add_member($post);
+						$this->session->set_flashdata('success', 'Member has been add successfully');
+						redirect('member');
+	      }
+	      else {
+	          $this->session->set_flashdata('error', validation_errors());
+	          redirect('member/create_member');
+	      }
+			}
+			else
+			{
+	 			$data['form_title'] = 'Add New Member';
+				$data['form_action'] = base_url('member/create_member');
+				$data['event'] = $this->event_model->get_event('', 1);
+				$data['grade'] = $this->member_model->get_grade();
+				$data['type'] = $this->member_model->get_type();
 
-			$this->load->view('member/member_form_view', $data);
+				$this->load->view('member/member_form_view', $data);
+			}
+		} else {
+			redirect('member');
 		}
 	}
 
@@ -293,16 +342,20 @@ Class Member extends CI_Controller {
 
 	public function delete_member($id='')
 	{
-    $delete_member = $this->member_model->delete_member($id);
+		if($this->session->userdata['logged_in']['user_status_id'] == 1) {
+	    $delete_member = $this->member_model->delete_member($id);
 
-    if($delete_member) {
-      $this->session->set_flashdata('success', 'Member ID '.$id.' has been deleted');
-      redirect('member');
-    }
-    else {
-    	$this->session->set_flashdata('error', 'Cannot delete Member ID '.$id);
-      redirect('member');
-    }
+	    if($delete_member) {
+	      $this->session->set_flashdata('success', 'Member ID '.$id.' has been deleted');
+	      redirect('member');
+	    }
+	    else {
+	    	$this->session->set_flashdata('error', 'Cannot delete Member ID '.$id);
+	      redirect('member');
+	    }
+		} else {
+			redirect('member');
+		}
   }
 
 	public function check_member()
@@ -344,30 +397,34 @@ Class Member extends CI_Controller {
 	}
 
 	public function export() {
-		$event_id = $this->input->post('event_id');
-		$type_id = $this->input->post('type_id');
+		if($this->session->userdata['logged_in']['user_status_id'] == 1) {
+			$event_id = $this->input->post('event_id');
+			$type_id = $this->input->post('type_id');
 
-    $field[] = ["REGISTRATION NUMBER", "NAME", "LOCATION", "EVENT", "GRADE", "SEAT", "TYPE"];
-    $get_member = $this->member_model->get_member('', $event_id, $type_id, 1);
+	    $field[] = ["REGISTRATION NUMBER", "NAME", "LOCATION", "EVENT", "GRADE", "SEAT", "TYPE"];
+	    $get_member = $this->member_model->get_member('', $event_id, $type_id, 1);
 
-		if(!empty($get_member)) {
-			foreach($get_member as $row) {
-					$data[] = [$row['registration_number'], $row['member_name'],
-											$row['location_name'], $row['event_name'], $row['grade_name'],
-											$row['seat'], $row['type_name']];
+			if(!empty($get_member)) {
+				foreach($get_member as $row) {
+						$data[] = [$row['registration_number'], $row['member_name'],
+												$row['location_name'], $row['event_name'], $row['grade_name'],
+												$row['seat'], $row['type_name']];
+				}
+
+				$xls = new Excel_XML;
+				$xls->addArray($field);
+				$xls->addArray($data);
+				$xls->generateXML('Member_Data_'.$get_member[0]['type_name'].'_'.$get_member[0]['location_name']);
+				// $xls->generateXML('Member_Data');
+
+				// $this->session->set_flashdata('success', 'Member data has been export successfully');
+				// redirect('member/export_member');
+			} else {
+				$this->session->set_flashdata('error', 'Member data not found');
+				redirect('member/export_member');
 			}
-
-			$xls = new Excel_XML;
-			$xls->addArray($field);
-			$xls->addArray($data);
-			$xls->generateXML('Member_Data_'.$get_member[0]['type_name'].'_'.$get_member[0]['location_name']);
-			// $xls->generateXML('Member_Data');
-
-			// $this->session->set_flashdata('success', 'Member data has been export successfully');
-			// redirect('member/export_member');
 		} else {
-			$this->session->set_flashdata('error', 'Member data not found');
-			redirect('member/export_member');
+			redirect('member');
 		}
   }
 

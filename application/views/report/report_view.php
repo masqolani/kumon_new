@@ -38,7 +38,7 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
                                 <th>Attended</th>
                                 <th>Doesn't Attended</th>
                                 <th>Total Member</th>
-                                <th>Percentage (%)</th>
+                                <th>Percentage</th>
                             </tr>
                         </thead>
                         <tfoot>

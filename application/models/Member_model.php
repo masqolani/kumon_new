@@ -60,12 +60,16 @@ Class Member_model extends CI_Model {
 			$query .= ' AND m.event_id = '.$event_id;
 		}
 
-		if(!empty($type_id)) {
-			$query .= ' AND m.type_id = '.$type_id;
-		}
-
 		if(!empty($attendance_status)) {
 			$query .= ' AND m.attend_status = '.$attendance_status;
+		}
+
+		if(!empty($type_id)) {
+			if($type_id == 'ALL') {
+					$query .= ' AND (m.type_id = 1 OR m.type_id = 2)';
+			} else {
+					$query .= ' AND m.type_id = '.$type_id;
+			}
 		}
 
     $query = $this->db->query($query);
@@ -88,9 +92,16 @@ Class Member_model extends CI_Model {
 			return FALSE;
   }
 
-	public function delete_member($id)
+	public function delete_member($id = '', $event_id = '')
   {
-    $this->db->where('member_id', $id);
+		if(!empty($id)) {
+				$this->db->where('member_id', $id);
+		}
+
+		if(!empty($event_id)) {
+				$this->db->where('event_id', $event_id);
+		}
+
 		$delete_member = $this->db->delete('member');
 
 		if($delete_member)

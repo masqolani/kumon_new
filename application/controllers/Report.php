@@ -17,6 +17,14 @@ class Report extends CI_Controller {
 	public function get_report() {
 		$get_report = $this->report_model->get_report();
 
+		if(!empty($get_report)) {
+			foreach ($get_report as $key => $value) {
+				$get_report[$key]['percentage'] = substr($value['percentage'],0,5).' %';
+			}
+		} else {
+			$get_report = [];
+		}
+
 		$data['data'] = $get_report;
 		echo json_encode($data);
 	}

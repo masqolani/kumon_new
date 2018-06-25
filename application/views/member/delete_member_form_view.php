@@ -35,7 +35,6 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
                       <div class="row">
                           <form id="export_member_form" action="<?php echo $form_action; ?>" enctype="multipart/form-data" method="post" role="form" style="display: block;">
                               <div class="col-lg-12">
-                                <input type="hidden" class="form-control" name="member_id" id="member_id" value="<?php echo (!empty($data['member_id'])) ? $data['member_id'] : "" ?>">
                                 <div class="col-lg-6">
                                   <div class="form-group">
                                       <label>Event Name</label>
@@ -54,23 +53,11 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
                                         ?>
                                       </select>
                                   </div>
-                                  <div class="form-group">
-                                      <label>Type Name</label>
-                                      <select id="type_id" name="type_id" class="form-control">
-                                        <option value="">Select Type</option>
-                                        <?php
-                                          echo '<option value="ALL">All</option>';
-                                          foreach($type as $row) {
-                                            echo '<option value="'.$row['type_id'].'">'.$row['type_name'].'</option>';
-                                          }
-                                        ?>
-                                      </select>
-                                  </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <label></label>
                                     <div class="form-group">
-                                        <button type="submit" class="btn btn-primary">Export</button>
+                                        <button type="submit" class="btn btn-primary">Delete Member</button>
                                     </div>
                                 </div>
                               </div>

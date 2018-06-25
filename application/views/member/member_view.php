@@ -27,24 +27,32 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
             <div class="panel panel-default">
                 <div class="panel-heading clearfix">
                     <h4 class="panel-title pull-left" style="padding-top: 7px;"><?php echo $title; ?></h4>
-                    <div class="btn-group pull-right" style="margin-right:5px;">
-                        <a href="<?php echo base_url('member/export_member'); ?>" class="btn btn-primary">
-                            <i class="fa fa-download"></i>
-                            Export Member
-                        </a>
-                    </div>
-                    <div class="btn-group pull-right" style="margin-right:5px;">
-                        <a href="<?php echo base_url('member/import_member'); ?>" class="btn btn-primary">
-                            <i class="fa fa-upload"></i>
-                            Import Member
-                        </a>
-                    </div>
-                    <div class="btn-group pull-right" style="margin-right:5px;">
-                        <a href="<?php echo base_url('member/create_member'); ?>" class="btn btn-primary">
-                            <i class="fa fa-plus"></i>
-                            Add Member
-                        </a>
-                    </div>
+                    <?php if($this->session->userdata['logged_in']['user_status_id'] == 1) { ?>
+                      <div class="btn-group pull-right" style="margin-right:5px;">
+                          <a href="<?php echo base_url('member/delete_member_by_event'); ?>" class="btn btn-primary">
+                              <i class="fa fa-trash"></i>
+                              Delete Member
+                          </a>
+                      </div>
+                      <div class="btn-group pull-right" style="margin-right:5px;">
+                          <a href="<?php echo base_url('member/export_member'); ?>" class="btn btn-primary">
+                              <i class="fa fa-download"></i>
+                              Export Member
+                          </a>
+                      </div>
+                      <div class="btn-group pull-right" style="margin-right:5px;">
+                          <a href="<?php echo base_url('member/import_member'); ?>" class="btn btn-primary">
+                              <i class="fa fa-upload"></i>
+                              Import Member
+                          </a>
+                      </div>
+                      <div class="btn-group pull-right" style="margin-right:5px;">
+                          <a href="<?php echo base_url('member/create_member'); ?>" class="btn btn-primary">
+                              <i class="fa fa-plus"></i>
+                              Add Member
+                          </a>
+                      </div>
+                    <?php } ?>
                 </div>
 
                 <!-- /.panel-heading -->
@@ -64,10 +72,11 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
                           <th>Type</th>
                           <th>Event</th>
                           <th>Seat</th>
-                          <th>Attendance</th>
+                          <th>Status</th>
                           <!-- <th>Session</th>
                           <th>Gate</th> -->
-                          <th>Action</th>
+                          <th>Attendance</th>
+                          <th>Other Action</th>
                         </tr>
                       </thead>
                       <tfoot>
@@ -134,6 +143,7 @@ $('#member_list').DataTable({
         { "data": "event_name" },
         { "data": "seat" },
         { "data": "attend_status" },
+        { "data": "actions_attendance" },
         { "data": "actions" }
     ],
     "order": [[ 1, "asc" ]]

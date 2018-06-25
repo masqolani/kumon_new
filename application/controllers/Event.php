@@ -18,6 +18,35 @@ class Event extends CI_Controller {
     $this->load->view('event/event_view', $data);
 	}
 
+	public function get_event_json(){
+
+		$get_event = $this->event_model->get_event();
+		$update = $this->event_model->update_event_less_than_today();
+
+		if(!empty($get_event)) {
+			foreach ($get_event as $key => $value) {
+				$actions = '';
+				if($value['event_status'] == 1) {
+					$event_status = "<a class='btn btn-sm btn-success default-cursor'>ACTIVE</a>";
+					$actions = anchor(base_url('event/update_event/').$value['event_id'], '<i class="fa fa-pencil"></i> Update', array('class' => 'btn btn-xs btn-success'));
+				} else {
+					$event_status = "<a class='btn btn-sm btn-danger default-cursor'>IN_ACTIVE</a>";
+				}
+
+				$actions .= ' '.anchor(base_url('event/delete_event/').$value['event_id'], '<i class="fa fa-trash-o"></i> Delete', array('class' => 'btn btn-xs btn-danger',
+				'onclick' => "return confirm('Are you sure you want to delete this event?');"));
+
+				$get_event[$key]['actions'] = $actions;
+				$get_event[$key]['event_status'] = $event_status;
+			}
+		} else {
+			$get_event = [];
+		}
+
+		$data['data'] = $get_event;
+		echo json_encode($data);
+	}
+
 	public function create_event() {
 		$post = $this->input->post();
 
@@ -59,6 +88,7 @@ class Event extends CI_Controller {
 			$this->form_validation->set_rules('location_id', 'Location', 'trim|required');
 
       if ($this->form_validation->run() === TRUE) {
+				// print_r($post);die;
       		$this->event_model->update_event($post);
           $this->session->set_flashdata('success', 'Event ID '.$post['event_id'].' has been updated successfully');
           redirect('event');
@@ -81,16 +111,23 @@ class Event extends CI_Controller {
 
 	public function delete_event($id='')
 	{
-    $delete_event = $this->event_model->delete_event($id);
+		$check_event_active = $this->event_model->get_event($id);
 
-    if($delete_event) {
-      $this->session->set_flashdata('success', 'Event ID '.$id.' has been deleted');
+		if($check_event_active[0]['event_status'] == 1) {
+			$this->session->set_flashdata('error', 'Cannot delete event when status active');
       redirect('event');
-    }
-    else {
-    	$this->session->set_flashdata('error', 'Cannot delete Event ID '.$id);
-      redirect('event');
-    }
+		} else {
+			$delete_event = $this->event_model->delete_event($id);
+
+			if($delete_event) {
+				$this->session->set_flashdata('success', 'Event ID '.$id.' has been deleted');
+				redirect('event');
+			}
+			else {
+				$this->session->set_flashdata('error', 'Cannot delete Event ID '.$id);
+				redirect('event');
+			}
+		}
   }
 
 	public function check_event()

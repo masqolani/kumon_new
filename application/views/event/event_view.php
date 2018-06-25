@@ -48,27 +48,8 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <?php
-                            if($event_data) {
-                                foreach ($event_data as $key => $value) {
-                                    $actions = anchor(base_url('event/update_event/').$value['event_id'], '<i class="fa fa-pencil"></i> Update', array('class' => 'btn btn-xs btn-success'));
-                                    $actions .= ' '.anchor(base_url('event/delete_event/').$value['event_id'], '<i class="fa fa-trash-o"></i> Delete', array('class' => 'btn btn-xs btn-danger', 'onclick' => "return confirm('Are you sure you want to delete this event?');"));
-                            ?>
-                                <tr>
-                                    <td><?php echo $value['event_id']; ?></td>
-                                    <td><?php echo $value['event_name']; ?></td>
-                                    <td><?php echo $value['start_date']; ?></td>
-                                    <td><?php echo $value['end_date']; ?></td>
-                                    <td><?php echo $value['location_name']; ?></td>
-                                    <td><?php echo $value['event_status'] == 1 ? "<a class='btn btn-sm btn-success'>ACTIVE</a>" : "<a class='btn btn-sm btn-danger'>IN_ACTIVE</a>"; ?></td>
-                                    <td><?php echo $actions; ?></td>
-                                </tr>
-                            <?php }
-                          } else { ?>
-                              <tr><td colspan="7" align="center">No Data Exist</td></tr>
-                          <?php } ?>
-                        </tbody>
+                        <tfoot>
+                        </tfoot>
                     </table>
                     <!-- /.table-responsive -->
                 </div>
@@ -83,10 +64,29 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <?php $this->load->view('_footer'); ?>
 
 <script type="text/javascript">
-    $(document).ready(function() {
+  function getBaseUrl() {
+      var l = window.location;
+      var base_url = l.protocol + "//" + l.host + "/" + l.pathname.split('/')[1];
+      return base_url;
+  }
+
+  $(document).ready(function() {
     $('#event_list').DataTable({
-        responsive: true,
-        order: [[ 0, "desc" ]]
+        "ajax": getBaseUrl() + "/event/get_event_json",
+        "columns": [
+            { "data": "event_id" },
+            { "data": "event_name" },
+            { "data": "start_date" },
+            { "data": "end_date" },
+            { "data": "location_name" },
+            { "data": "event_status" },
+            { "data": "actions" }
+        ],
+        "order": [[ 0, "desc" ]]
     });
+
+    setInterval( function () {
+        $('#event_list').DataTable().ajax.reload(null, false);
+    }, 15000);
 });
 </script>

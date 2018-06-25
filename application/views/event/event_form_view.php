@@ -66,6 +66,26 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
                                         ?>
                                       </select>
                                   </div>
+                                  <?php if(!empty($data['event_id'])) { ?>
+                                    <div class="form-group">
+                                        <label>Event Status</label>
+                                        <select id="event_status" name="event_status" class="form-control">
+                                          <option value="">Select status</option>
+
+                                          <?php
+                                              $selected = '';
+                                              if(!empty($data['event_status'])){
+                                                if($data['event_status'] == 1){
+                                                   $selected = 'selected="selected"';
+                                                }
+                                              }
+
+                                              echo '<option value="0" '.$selected.'>IN_ACTIVE</option>';
+                                              echo '<option value="1" '.$selected.'>ACTIVE</option>';
+                                          ?>
+                                        </select>
+                                    </div>
+                                  <?php } ?>
                                 </div>
                                 <div class="col-lg-12">
                                     <label></label>

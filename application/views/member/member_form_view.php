@@ -106,7 +106,7 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
                                   </div>
                                   <div class="form-group">
                                       <label>Seat</label>
-                                      <input type="text" class="form-control" name="seat" id="seat" value="<?php echo (!empty($data['seat'])) ? $data['seat'] : "" ?>">
+                                      <input type="text" class="form-control" name="seat" id="seat" value="<?php echo (!empty($data['seat'])) ? $data['seat'] : "" ?>" disabled>
                                   </div>
                                   <div class="form-group">
                                       <label>Award</label>
@@ -180,7 +180,7 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
                                   </div>
                                   <div class="form-group">
                                       <label>Attendance Status</label>
-                                      <select id="attend_status" name="attend_status" class="form-control">
+                                      <select id="attend_status" name="attend_status" class="form-control" disabled>
                                         <?php
                                         $selected_attend = '';
                                         $selected_not_attend = '';

@@ -34,10 +34,9 @@ class Event_model extends CI_Model {
 			return FALSE;
 	}
 
-	public function get_event($event_id = '', $status = '') {
+	public function get_event($event_id = '', $status = '', $location_id = '') {
 
-		$update_status_to_inactive = "UPDATE event SET event_status = 0 WHERE end_date < now()";
-		$this->db->query($update_status_to_inactive);
+		$this->update_event_less_than_today();
 
 		$query = "SELECT ev.event_id, ev.event_name, ev.start_date, ev.end_date,
 											loc.location_id, loc.location_name, ev.event_status
@@ -46,11 +45,15 @@ class Event_model extends CI_Model {
 							WHERE 1=1 ";
 
 		if(!empty($event_id)) {
-			$query .= ' AND event_id = '.$event_id;
+			$query .= ' AND ev.event_id = '.$event_id;
 		}
 
 		if(!empty($status)) {
-			$query .= ' AND event_status = '.$status;
+			$query .= ' AND ev.event_status = '.$status;
+		}
+
+		if(!empty($location_id)) {
+			$query .= ' AND loc.location_id = '.$location_id;
 		}
 
     $query = $this->db->query($query);
@@ -69,18 +72,26 @@ class Event_model extends CI_Model {
 		$data['location_id'] = $post['location_id'];
 		$data['start_date'] = $post['start_date'];
 		$data['end_date'] = $post['end_date'];
+		$data['event_status'] = $post['event_status'];
 
 		$this->db->where('event_id', $post['event_id']);
 		$query = $this->db->update('event', $data);
-
-		$update_status_to_active = "UPDATE event SET event_status = 1 WHERE end_date > now()";
-		$this->db->query($update_status_to_active);
 
 		if($query)
 			return TRUE;
 		else
 			return FALSE;
   }
+
+	public function update_event_less_than_today() {
+		$update_status_to_inactive = "UPDATE event SET event_status = 0 WHERE end_date < now()";
+		$query = $this->db->query($update_status_to_inactive);
+
+		if($query)
+			return TRUE;
+		else
+			return FALSE;
+	}
 
 	public function delete_event($id)
   {
