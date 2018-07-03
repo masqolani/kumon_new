@@ -12,11 +12,14 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">Welcome to ASF 2018</h1>
+                <h1 class="page-header" align="center">Welcome to ASF 2018</h1>
             </div>
             <!-- /.col-lg-12 -->
         </div>
         <div class="row">
+          <!-- ganti gambar -->
+          <img src="<?php echo base_url("assets/images/login_wallpaper.jpg")?>"
+          class="img-fluid img-thumbnail">
         </div>
         <!-- /.row -->
     </div>

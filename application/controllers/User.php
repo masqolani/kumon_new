@@ -6,7 +6,7 @@ class User extends CI_Controller {
 	public function __construct() {
     parent::__construct();
 
-		if($this->session->userdata['logged_in']['user_status_id'] !== 1) {
+		if($this->session->userdata['logged_in']['user_status_id'] !== "1") {
 			redirect('home');
 		}
 
@@ -93,6 +93,10 @@ class User extends CI_Controller {
 		}
 		else {
 			$get_user = $this->user_model->get_user($user_id);
+
+			// print_r($get_user);die;
+			// print_r(base64_decode($get_user[0]['password']));die;
+
 			$data['form_title'] = 'Update User';
 			$data['form_action'] = base_url('user/update_user/'.$user_id);
 			$data['data'] = $get_user[0];

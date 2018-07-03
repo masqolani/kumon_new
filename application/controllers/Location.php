@@ -49,49 +49,57 @@ class Location extends CI_Controller {
 
 	public function update_location($location_id='')
 	{
-		$post = $this->input->post();
+		if($this->session->userdata['logged_in']['user_status_id'] == 1) {
+			$post = $this->input->post();
 
-		if($post) {
-			$this->form_validation->set_rules('location_name', 'Location Name', 'trim|required');
+			if($post) {
+				$this->form_validation->set_rules('location_name', 'Location Name', 'trim|required');
 
-      if ($this->form_validation->run() === TRUE) {
-      		$this->location_model->update_location($post);
-          $this->session->set_flashdata('success', 'Location ID '.$post['location_id'].' has been updated successfully');
-          redirect('location');
-      }
-      else {
-          $this->session->set_flashdata('error', validation_errors());
-          redirect('location/update_location/'.$location_id);
-      }
-		}
-		else {
-			$get_location = $this->location_model->get_location($location_id);
-			$data['form_title'] = 'Update Location';
-			$data['form_action'] = base_url('location/update_location/'.$location_id);
-			$data['data'] = $get_location[0];
+	      if ($this->form_validation->run() === TRUE) {
+	      		$this->location_model->update_location($post);
+	          $this->session->set_flashdata('success', 'Location ID '.$post['location_id'].' has been updated successfully');
+	          redirect('location');
+	      }
+	      else {
+	          $this->session->set_flashdata('error', validation_errors());
+	          redirect('location/update_location/'.$location_id);
+	      }
+			}
+			else {
+				$get_location = $this->location_model->get_location($location_id);
+				$data['form_title'] = 'Update Location';
+				$data['form_action'] = base_url('location/update_location/'.$location_id);
+				$data['data'] = $get_location[0];
 
-			$this->load->view('location/location_form_view', $data);
+				$this->load->view('location/location_form_view', $data);
+			}
+		} else {
+			redirect('location');
 		}
 	}
 
 	public function delete_location($id='')
 	{
-		$check_location_active = $this->event_model->get_event('', '', $id);
+		if($this->session->userdata['logged_in']['user_status_id'] == 1) {
+			$check_location_active = $this->event_model->get_event('', '', $id);
 
-		if($check_location_active) {
-			$this->session->set_flashdata('error', 'Cannot delete Location when location used in event');
-			redirect('location');
+			if($check_location_active) {
+				$this->session->set_flashdata('error', 'Cannot delete Location when location used in event');
+				redirect('location');
+			} else {
+				$delete_location = $this->location_model->delete_location($id);
+
+				if($delete_location) {
+					$this->session->set_flashdata('success', 'Location ID '.$id.' has been deleted');
+					redirect('location');
+				}
+				else {
+					$this->session->set_flashdata('error', 'Cannot delete Location ID '.$id);
+					redirect('location');
+				}
+			}
 		} else {
-			$delete_location = $this->location_model->delete_location($id);
-
-			if($delete_location) {
-				$this->session->set_flashdata('success', 'Location ID '.$id.' has been deleted');
-				redirect('location');
-			}
-			else {
-				$this->session->set_flashdata('error', 'Cannot delete Location ID '.$id);
-				redirect('location');
-			}
+			redirect('location');
 		}
   }
 

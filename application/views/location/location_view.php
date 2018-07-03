@@ -27,12 +27,14 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
             <div class="panel panel-default">
                 <div class="panel-heading clearfix">
                     <h4 class="panel-title pull-left" style="padding-top: 7px;"><?php echo $title; ?></h4>
+                    <?php if($this->session->userdata['logged_in']['user_status_id'] == 1) { ?>
                     <div class="btn-group pull-right">
-                        <a href="<?php echo base_url('location/create_location'); ?>" class="btn btn-primary">
+                        <a href="<?php echo base_url('location/create_location'); ?>" class="btn btn-primary btn-sm">
                             <i class="fa fa-plus"></i>
                             Add New Location
                         </a>
                     </div>
+                  <?php } ?>
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
@@ -46,10 +48,21 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
                         </thead>
                         <tbody>
                             <?php
+                            $btn_danger = "btn btn-xs btn-danger disabled";
+                            $btn_success = "btn btn-xs btn-success disabled";
+
+                            if($this->session->userdata['logged_in']['user_status_id'] == 1) {
+                              $btn_success = "btn btn-xs btn-success";
+                              $btn_danger = "btn btn-xs btn-danger";
+                            }
+
                             if($location_data) {
                                 foreach ($location_data as $key => $value) {
-                                    $actions = anchor(base_url('location/update_location/').$value['location_id'], '<i class="fa fa-pencil"></i> Update', array('class' => 'btn btn-xs btn-success'));
-                                    $actions .= ' '.anchor(base_url('location/delete_location/').$value['location_id'], '<i class="fa fa-trash-o"></i> Delete', array('class' => 'btn btn-xs btn-danger', 'onclick' => "return confirm('Are you sure you want to delete this location?');"));
+                                    $actions = anchor(base_url('location/update_location/').$value['location_id'], '<i class="fa fa-pencil"></i> Update',
+                                              array('class' => $btn_success));
+                                    $actions .= ' '.anchor(base_url('location/delete_location/').$value['location_id'], '<i class="fa fa-trash-o"></i> Delete',
+                                              array('class' => $btn_danger,
+                                              'onclick' => "return confirm('Are you sure you want to delete this location?');"));
                             ?>
                                 <tr>
                                     <td><?php echo $value['location_id']; ?></td>

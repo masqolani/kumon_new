@@ -25,7 +25,7 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
                     <div class="panel-heading clearfix">
 	                    <h4 class="panel-title pull-left" style="padding-top: 7px;"><?php echo $form_title; ?></h4>
 	                    <div class="btn-group pull-right">
-	                        <a href="<?php echo base_url('user'); ?>" class="btn btn-primary">
+	                        <a href="<?php echo base_url('user'); ?>" class="btn btn-primary btn-sm">
 	                            <i class="fa fa-arrow-left"></i>
 	                            Back to List User
 	                        </a>

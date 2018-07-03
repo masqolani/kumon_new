@@ -29,25 +29,25 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
                     <h4 class="panel-title pull-left" style="padding-top: 7px;"><?php echo $title; ?></h4>
                     <?php if($this->session->userdata['logged_in']['user_status_id'] == 1) { ?>
                       <div class="btn-group pull-right" style="margin-right:5px;">
-                          <a href="<?php echo base_url('member/delete_member_by_event'); ?>" class="btn btn-primary">
+                          <a href="<?php echo base_url('member/delete_member_by_event'); ?>" class="btn btn-primary btn-sm">
                               <i class="fa fa-trash"></i>
                               Delete Member
                           </a>
                       </div>
                       <div class="btn-group pull-right" style="margin-right:5px;">
-                          <a href="<?php echo base_url('member/export_member'); ?>" class="btn btn-primary">
+                          <a href="<?php echo base_url('member/export_member'); ?>" class="btn btn-primary btn-sm">
                               <i class="fa fa-download"></i>
                               Export Member
                           </a>
                       </div>
                       <div class="btn-group pull-right" style="margin-right:5px;">
-                          <a href="<?php echo base_url('member/import_member'); ?>" class="btn btn-primary">
+                          <a href="<?php echo base_url('member/import_member'); ?>" class="btn btn-primary btn-sm">
                               <i class="fa fa-upload"></i>
                               Import Member
                           </a>
                       </div>
                       <div class="btn-group pull-right" style="margin-right:5px;">
-                          <a href="<?php echo base_url('member/create_member'); ?>" class="btn btn-primary">
+                          <a href="<?php echo base_url('member/create_member'); ?>" class="btn btn-primary btn-sm">
                               <i class="fa fa-plus"></i>
                               Add Member
                           </a>
@@ -70,7 +70,7 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
                           <th>Name</th>
                           <th>Class</th>
                           <th>Type</th>
-                          <th>Event</th>
+                          <th>Trophy Table</th>
                           <th>Seat</th>
                           <th>Status</th>
                           <!-- <th>Session</th>
@@ -140,11 +140,41 @@ $('#member_list').DataTable({
         { "data": "member_name" },
         { "data": "grade_name" },
         { "data": "type_name" },
-        { "data": "event_name" },
+        { "data": "trophy_table" },
         { "data": "seat" },
         { "data": "attend_status" },
         { "data": "actions_attendance" },
         { "data": "actions" }
+    ],
+    'columnDefs': [
+      {
+        "targets": 2,
+        "className": "text-center"
+      },
+      {
+        "targets": 3,
+        "className": "text-center"
+      },
+      {
+        "targets": 4,
+        "className": "text-center"
+      },
+      {
+        "targets": 5,
+        "className": "text-center"
+      },
+      {
+        "targets": 6,
+        "className": "text-center"
+      },
+      {
+        "targets": 7,
+        "className": "text-center"
+      },
+      {
+        "targets": 8,
+        "className": "text-center"
+      }
     ],
     "order": [[ 1, "asc" ]]
 });

@@ -53,7 +53,7 @@ Class Member_model extends CI_Model {
 		WHERE 1=1 ';
 
 		if(!empty($member_id)) {
-			$query .= ' AND member_id = '.$member_id;
+			$query .= ' AND m.member_id = '.$member_id;
 		}
 
 		if(!empty($event_id)) {

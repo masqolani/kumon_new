@@ -27,12 +27,14 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
             <div class="panel panel-default">
                 <div class="panel-heading clearfix">
                     <h4 class="panel-title pull-left" style="padding-top: 7px;"><?php echo $title; ?></h4>
-                    <div class="btn-group pull-right">
-                        <a href="<?php echo base_url('event/create_event'); ?>" class="btn btn-primary">
-                            <i class="fa fa-plus"></i>
-                            Add New Event
-                        </a>
-                    </div>
+                    <?php if($this->session->userdata['logged_in']['user_status_id'] == 1) { ?>
+                      <div class="btn-group pull-right">
+                          <a href="<?php echo base_url('event/create_event'); ?>" class="btn btn-primary btn-sm">
+                              <i class="fa fa-plus"></i>
+                              Add New Event
+                          </a>
+                      </div>
+                    <?php } ?>
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
@@ -85,8 +87,8 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
         "order": [[ 0, "desc" ]]
     });
 
-    setInterval( function () {
-        $('#event_list').DataTable().ajax.reload(null, false);
-    }, 15000);
+    // setInterval( function () {
+    //     $('#event_list').DataTable().ajax.reload(null, false);
+    // }, 15000);
 });
 </script>
