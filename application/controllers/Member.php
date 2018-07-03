@@ -13,18 +13,16 @@ Class Member extends CI_Controller {
 
 	public function index() {
 		$event = $this->event_model->get_event('', 1);
-		$get_member = $this->member_model->get_member();
 
 		$data['title'] = 'Member List';
-		$data['member_data'] = $get_member;
 		$data['event_list'] = $event;
 
     $this->load->view('member/member_view', $data);
 	}
 
 	public function get_member_json($event_id = ''){
-
-		$get_member = $this->member_model->get_member('', $event_id);
+		$event = $this->event_model->get_event('', 1);
+		$get_member = $this->member_model->get_member('', $event_id, '', '', $event);
 
 		if(!empty($get_member)) {
 			foreach ($get_member as $key => $value) {

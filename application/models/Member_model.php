@@ -37,7 +37,7 @@ Class Member_model extends CI_Model {
 			return FALSE;
 	}
 
-	public function get_member($member_id = '', $event_id = '', $type_id = '', $attendance_status = '') {
+	public function get_member($member_id = '', $event_id = '', $type_id = '', $attendance_status = '', $event_id_array = []) {
   	$query = 'SELECT
 		m.member_id, m.member_name, m.registration_number, m.event_id, m.type_id,
 		c.grade_name, t.type_name, e.event_name, l.location_name, m.seat,
@@ -49,8 +49,25 @@ Class Member_model extends CI_Model {
 		LEFT JOIN grade AS c ON m.grade_id = c.grade_id
 		LEFT JOIN type AS t ON m.type_id = t.type_id
 		LEFT JOIN event AS e ON m.event_id = e.event_id
-		LEFT JOIN location AS l ON e.location_id = l.location_id
-		WHERE 1=1 ';
+		LEFT JOIN location AS l ON e.location_id = l.location_id';
+
+		// print_r($event_id_array);die;
+		if(!empty($event_id_array)) {
+				$event_id_string = "";
+				for($i=0; $i<count($event_id_array); $i++) {
+					if($i > 0) {
+						$event_id_string .= ',';
+					}
+					$event_id_string .= $event_id_array[$i]['event_id'];
+				}
+
+				// print_r($event_id_string);die;
+
+				$query .= ' WHERE m.event_id IN ('.$event_id_string.')';
+		} else {
+				$query .= ' WHERE 1=1';
+		}
+
 
 		if(!empty($member_id)) {
 			$query .= ' AND m.member_id = '.$member_id;
@@ -71,6 +88,8 @@ Class Member_model extends CI_Model {
 					$query .= ' AND m.type_id = '.$type_id;
 			}
 		}
+
+		// print_r($query);die;
 
     $query = $this->db->query($query);
   	$query = $query->result_array();

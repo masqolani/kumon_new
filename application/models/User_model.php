@@ -88,11 +88,18 @@ class User_model extends CI_Model {
 
 	public function update_user($post)
   {
+		$get_user = $this->get_user($post['user_id']);
+		if($get_user[0]['password'] == $post['password']) {
+			$password = $post['password'];
+		} else {
+			$password = md5($post['password']);
+		}
+
   	$data['username'] = $post['username'];
   	$data['first_name'] = $post['first_name'];
   	$data['last_name'] = $post['last_name'];
   	$data['email'] = $post['email'];
-    $data['password'] = md5($post['password']);
+    $data['password'] = $password;
     $data['user_status_id'] = $post['user_status_id'];
 
 		$this->db->where('user_id', $post['user_id']);

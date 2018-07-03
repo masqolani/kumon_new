@@ -16,9 +16,9 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
             </div>
             <!-- /.col-lg-12 -->
         </div>
-        <div class="row">
+        <div class="row" align="center">
           <!-- ganti gambar -->
-          <img src="<?php echo base_url("assets/images/login_wallpaper.jpg")?>"
+          <img style="max-width: 1200px; max-height: 900px;" src="<?php echo base_url("assets/images/logo_asf_2018-min.png")?>"
           class="img-fluid img-thumbnail">
         </div>
         <!-- /.row -->
