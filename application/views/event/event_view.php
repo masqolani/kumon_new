@@ -87,8 +87,8 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
         "order": [[ 0, "desc" ]]
     });
 
-    // setInterval( function () {
-    //     $('#event_list').DataTable().ajax.reload(null, false);
-    // }, 15000);
+    setInterval( function () {
+        $('#event_list').DataTable().ajax.reload(null, false);
+    }, 15000);
 });
 </script>
