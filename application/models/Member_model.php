@@ -193,25 +193,38 @@ Class Member_model extends CI_Model {
 
 		if(empty($seat)) {
 			$grade = $this->get_grade($get_member_by_id[0]['grade_id']);
-
 			$event_id = $get_member_by_id[0]['event_id'];
 			$grade_id = $grade[0]['grade_id'];
 			$grade_code = $grade[0]['grade_code'];
 
-	  	$query = "SELECT m.member_id, m.member_name, m.registration_number,
-			c.grade_name, t.type_name, e.event_name, l.location_name, m.seat,
-			m.attend_status, m.grade_id, m.get_award, m.member_session, m.gate_in, m.trophy_table,
-			m.meeting_point
-			FROM member AS m
-			LEFT JOIN grade AS c ON m.grade_id = c.grade_id
-			LEFT JOIN type AS t ON m.type_id = t.type_id
-			LEFT JOIN event AS e ON m.event_id = e.event_id
-			LEFT JOIN location AS l ON e.location_id = l.location_id
-			WHERE m.event_id = '$event_id' AND m.grade_id = '$grade_id' AND m.attend_status = 1";
+			if($grade_code == "X") {
+				$query = "SELECT m.seat
+				FROM member AS m
+				LEFT JOIN event AS e ON m.event_id = e.event_id
+				WHERE m.event_id = '$event_id' AND m.attend_status = 1
+				AND m.seat LIKE 'X%'";
 
-	    $query = $this->db->query($query);
-	  	$query = $query->result_array();
-			$seat_number = count($query) + 1;
+				$query = $this->db->query($query);
+				$query = $query->result_array();
+
+				$seat_number = count($query) + 1;
+
+			} else {
+				$query = "SELECT m.member_id, m.member_name, m.registration_number,
+				c.grade_name, t.type_name, e.event_name, l.location_name, m.seat,
+				m.attend_status, m.grade_id, m.get_award, m.member_session, m.gate_in, m.trophy_table,
+				m.meeting_point
+				FROM member AS m
+				LEFT JOIN grade AS c ON m.grade_id = c.grade_id
+				LEFT JOIN type AS t ON m.type_id = t.type_id
+				LEFT JOIN event AS e ON m.event_id = e.event_id
+				LEFT JOIN location AS l ON e.location_id = l.location_id
+				WHERE m.event_id = '$event_id' AND m.grade_id = '$grade_id' AND m.attend_status = 1";
+
+				$query = $this->db->query($query);
+				$query = $query->result_array();
+				$seat_number = count($query) + 1;
+			}
 
 			$seat = $grade_code.' '.$seat_number;
 		}

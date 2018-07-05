@@ -152,9 +152,6 @@ Class Member extends CI_Controller {
 
 					$grade_name = $data['values'][$i]['C'];
 					$trophy_table = $data['values'][$i]['I'];
-					if($trophy_table == 'COMPLETER') {
-						$grade_name = '';
-					}
 
 					$grade = $this->member_model->get_grade('', $grade_name, $trophy_table);
 					$grade_id = $grade[0]['grade_id'];
